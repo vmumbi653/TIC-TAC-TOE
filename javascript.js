@@ -61,6 +61,9 @@ function gameFlow() {
     let activePlayer = playerOne;
     console.log(activePlayer);
 
+    //variable for gameOver
+    let gameOver = false;
+
      //function to get activePlayer
      const getActivePlayer = () => activePlayer;
      console.log(getActivePlayer());
@@ -68,7 +71,7 @@ function gameFlow() {
       //function to switch players
     const switchPlayer = () => {
         activePlayer = activePlayer === playerOne ? playerTwo : playerOne;
-    }
+    };
 
 
     //function to check for winner
@@ -84,12 +87,27 @@ function gameFlow() {
 
     }
 
+    //function to check if board is full
+    const isBoardFull = () => {
+        return game.showBoard().every(cell => cell !== "");
+    };
+
     const playGame = (index) => {
+        if(gameOver) {
+            console.log("GAME OVER! Please reset the game to start over");
+            return;
+        }
         if(game.setCell(index, activePlayer.marker)) {
             const winner = checkWinner();
             console.log(game.showBoard());
             if(winner) {
                 console.log(`${winner} wins this round!`);
+                gameOver = true;
+                return;
+            }
+            if(isBoardFull()) {
+                console.log("IT'S A DRAW!");
+                gameOver = true;
                 return;
             }
             switchPlayer();
@@ -99,7 +117,16 @@ function gameFlow() {
         }
     }
 
-    return {playGame, showBoard: game.showBoard, resetBoard: game.resetBoard};
+    //reset function
+    const resetGame = () => {
+        game.resetBoard();
+        gameOver = false;
+        activePlayer = playerOne;
+        console.log("Game has been reset!");
+        console.log(`${activePlayer.name} is starting the game`);
+    }
+
+    return {playGame, showBoard: game.showBoard, resetBoard: game.resetBoard, resetGame};
 };
 
 const startGame = gameFlow();
@@ -109,6 +136,7 @@ console.log (startGame.playGame(4));
 console.log (startGame.playGame(1));
 console.log (startGame.playGame(5));
 console.log (startGame.playGame(2));
+console.log(startGame.resetGame());
 
 
 
