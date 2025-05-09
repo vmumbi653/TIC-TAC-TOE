@@ -35,6 +35,31 @@ const game = (function() {
     return{createBoard, showBoard, getCell, setCell, resetBoard};
 })();
 
+//display function
+const displayController =(function() {
+    const board = document.getElementById("gaame-container");
+
+    //render the board
+    const renderBoard = (arr) => {
+        for(let i = 0; i < arr.length; i++) {
+            let gameCell = document.createElement("div");
+            gameCell.id = i;
+            gameCell.classList = "cell";
+            gameCell.setAttribute("gameCell-data", i);
+            cell.textContent = arr[i];
+            board.appendChild(gameCell);
+        }
+    }
+    //function to clear Board
+    const clearBoard = () => {
+        while(board.hasChildNodes()) {
+            board.removeChild(board.firstChild);
+        }
+    }
+    return{board, renderBoard, clearBoard};
+
+})();
+
 
 //function to direct flow of the game
 function gameFlow() {
