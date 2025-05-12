@@ -1,0 +1,27 @@
+html {
+    min-height: 100vh;
+    min-width: 100vw;
+    box-sizing: border-box;
+}
+
+#game-container {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    justify-content: center;
+}
+
+.cell {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 70px;
+    border: solid 1px;
+    width: 100px;
+    user-select: none;
+    height: 100px;
+}
+h1 {
+    font-weight: bold;
+    text-align: center;
+}

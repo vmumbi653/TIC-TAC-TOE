@@ -1,15 +1,12 @@
 const game = (function() {
     let gameBoard = [];   //store gameboard in array
-    // let row = 3;
-    // let column = 3;
-    
     
     //function to create gameboard
     function createBoard() {
        gameBoard = new Array(9).fill("");
     }
 
-    //function to get cell index and its value
+    //function to get cell index
     function getCell(index) {
        return gameBoard[index];
     };
@@ -37,7 +34,7 @@ const game = (function() {
 
 //display function
 const displayController =(function() {
-    const board = document.getElementById("gaame-container");
+    const board = document.getElementById("game-container");
 
     //render the board
     const renderBoard = (arr) => {
@@ -46,7 +43,7 @@ const displayController =(function() {
             gameCell.id = i;
             gameCell.classList = "cell";
             gameCell.setAttribute("gameCell-data", i);
-            cell.textContent = arr[i];
+            gameCell.textContent = arr[i];
             board.appendChild(gameCell);
         }
     }
@@ -109,7 +106,6 @@ function gameFlow() {
             }
             return null;
         }    
-
     }
 
     //function to check if board is full
@@ -151,17 +147,35 @@ function gameFlow() {
         console.log(`${activePlayer.name} is starting the game`);
     }
 
+    //add event listener for each cell on board
+    const boardEl = displayController.board;
+    displayController.renderBoard(game.showBoard());
+    boardEl.addEventListener("click", (e) => {
+        if(e.target.classList.contains("cell")) {
+            const index = e.target.getAttribute("gameCell-data");
+
+            game.setCell(index, playGame());
+
+            displayController.clearBoard();
+            displayController.renderBoard(game.showBoard());
+        }
+    })
+    
+
     return {playGame, showBoard: game.showBoard, resetBoard: game.resetBoard, resetGame};
 };
 
 const startGame = gameFlow();
 
-console.log (startGame.playGame(0));
-console.log (startGame.playGame(4));
-console.log (startGame.playGame(1));
-console.log (startGame.playGame(5));
-console.log (startGame.playGame(2));
-console.log(startGame.resetGame());
+const display = displayController;
+display.renderBoard;
+
+// console.log (startGame.playGame(0));
+// console.log (startGame.playGame(4));
+// console.log (startGame.playGame(1));
+// console.log (startGame.playGame(5));
+// console.log (startGame.playGame(2));
+// console.log(startGame.resetGame());
 
 
 
