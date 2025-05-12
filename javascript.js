@@ -1,3 +1,10 @@
+//add event listeners for the button
+const addPlayerBtn = document.querySelector("button");
+
+addPlayerBtn.addEventListener("click", () => {
+    dialog.showModal();
+});
+
 const game = (function() {
     let gameBoard = [];   //store gameboard in array
     
@@ -31,32 +38,6 @@ const game = (function() {
 
     return{createBoard, showBoard, getCell, setCell, resetBoard};
 })();
-
-//display function
-const displayController =(function() {
-    const board = document.getElementById("game-container");
-
-    //render the board
-    const renderBoard = (arr) => {
-        for(let i = 0; i < arr.length; i++) {
-            let gameCell = document.createElement("div");
-            gameCell.id = i;
-            gameCell.classList = "cell";
-            gameCell.setAttribute("gameCell-data", i);
-            gameCell.textContent = arr[i];
-            board.appendChild(gameCell);
-        }
-    }
-    //function to clear Board
-    const clearBoard = () => {
-        while(board.hasChildNodes()) {
-            board.removeChild(board.firstChild);
-        }
-    }
-    return{board, renderBoard, clearBoard};
-
-})();
-
 
 //function to direct flow of the game
 function gameFlow() {
@@ -101,11 +82,12 @@ function gameFlow() {
         const board = game.showBoard();
         for(const combo of winningCombos) {
             const[a, b, c] = combo;
-            if(board[a] && board[b] === board[b] && board[a] === board[c]) {
+            if(board[a] && board[a] === board[b] && board[a] === board[c]) {
                 return activePlayer.name;
             }
-            return null;
-        }    
+        
+        }  
+        return null;    //return null after checking all combos  
     }
 
     //function to check if board is full
@@ -116,6 +98,7 @@ function gameFlow() {
     const playGame = (index) => {
         if(gameOver) {
             console.log("GAME OVER! Please reset the game to start over");
+            alert("GAME OVER! Please reset the game to start over");
             return;
         }
         if(game.setCell(index, activePlayer.marker)) {
@@ -123,11 +106,13 @@ function gameFlow() {
             console.log(game.showBoard());
             if(winner) {
                 console.log(`${winner} wins this round!`);
+                alert(`${winner} wins this round!`);
                 gameOver = true;
                 return;
             }
             if(isBoardFull()) {
                 console.log("IT'S A DRAW!");
+                alert("It's a DRAW!");
                 gameOver = true;
                 return;
             }
@@ -147,28 +132,102 @@ function gameFlow() {
         console.log(`${activePlayer.name} is starting the game`);
     }
 
-    //add event listener for each cell on board
-    const boardEl = displayController.board;
-    displayController.renderBoard(game.showBoard());
-    boardEl.addEventListener("click", (e) => {
-        if(e.target.classList.contains("cell")) {
-            const index = e.target.getAttribute("gameCell-data");
 
-            game.setCell(index, playGame());
-
-            displayController.clearBoard();
-            displayController.renderBoard(game.showBoard());
-        }
-    })
-    
-
-    return {playGame, showBoard: game.showBoard, resetBoard: game.resetBoard, resetGame};
+    return {playGame, resetBoard: game.resetBoard, resetGame, getActivePlayer, switchPlayer};
 };
 
-const startGame = gameFlow();
+//display function
+const displayController =(function() {
+    //get game module
+    const gameModule = gameFlow();
+    const playerTurnDiv = document.querySelector(".turn");
+    const board = document.getElementById("game-container");
 
-const display = displayController;
-display.renderBoard;
+    //function to update screen
+    const updateScreen = () => {
+        //clearBoard
+        board.textContent = '';
+
+        //get latest version of gameboard and player turn
+        const gameBoard = game.showBoard();
+        const activePlayer = gameModule.getActivePlayer();
+
+        //display player's turn
+        playerTurnDiv.textContent = `${activePlayer.name}'s turn......`;
+
+        //render game
+        for(let i = 0; i < gameBoard.length; i++) {
+            let gameCell = document.createElement("div");
+            gameCell.id = i;
+            gameCell.classList = "cell";
+            gameCell.setAttribute("game-data", i);
+            gameCell.textContent = gameBoard[i];
+            board.appendChild(gameCell);
+        }
+
+    }
+    //function to clear Board
+    const clearBoard = () => {
+        while(board.hasChildNodes()) {
+            board.removeChild(board.firstChild);
+        }
+    }
+
+    //click function
+    function clickHandler() {
+        //add event lsiterner on each cell
+        board.addEventListener("click", (e) => {
+            if(!e.target.classList.contains("cell")) return;
+            const index = e.target.getAttribute("game-data");
+
+            gameModule.playGame(index);
+            updateScreen();
+
+        });
+
+    };
+    const init = () => {
+        updateScreen();
+        clickHandler();
+    }
+    // updateScreen();
+    // return{board, renderBoard, clearBoard, updateScreen};
+    return{init};
+
+})();
+
+displayController.init();
+
+// //function for click event
+// function clickHandler() {
+//     //add event listener for each cell on board
+//     const boardEl = displayController.board;
+//     displayController.renderBoard(game.showBoard());
+//     boardEl.addEventListener("click", (e) => {
+//         if(!e.target.classList.contains("cell")) return; 
+//             const index = e.target.getAttribute("game-data");
+//         if(game.showBoard()[index]) return;
+
+//             game.setCell(index, getActivePlayer().marker);
+//             switchPlayer();
+//             checkWinner();
+            
+
+//             displayController.clearBoard();
+//             displayController.renderBoard(game.showBoard());
+        
+//     })
+
+// }
+
+// const startGame = gameFlow();
+
+// const display = displayController;
+// display.renderBoard(game.showBoard());
+// display.updateScreen();
+// clickHandler();
+
+// startGame.playGame;
 
 // console.log (startGame.playGame(0));
 // console.log (startGame.playGame(4));

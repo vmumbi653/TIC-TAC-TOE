@@ -25,3 +25,14 @@ h1 {
     font-weight: bold;
     text-align: center;
 }
+
+button {
+    /* width: 300px; */
+    border-radius: 6px;
+    width: 100px;
+    padding: 5px;
+    font-size: 15px;
+    border: 1px solid black;
+    box-shadow: 0 0 5px #5b2925;
+    box-sizing: border-box;
+}

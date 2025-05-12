@@ -8,7 +8,25 @@
 
 </head>
 <body>
-    <h1>TIC TAC TOE</h1>
+    <div>
+       <h1>TIC TAC TOE</h1>
+       <h3 class="turn"></h1>
+        <div class="playerUno"></div>
+        <div class="playerDos"></div>
+    </div>
+    <div class="players">
+        <dialog id="dialog">
+            <form method="dialog" id="form">
+                <div>
+                <label for="player">Player Name</label>
+                <input type="text" id="player" name="player">
+            </div>
+            </form>
+        </dialog>
+        <div>
+            <button type="submit" value="default" id="submit">Add Player</button>
+        </div>
+    </div>
     <div id="game-container"></div>
     <script src="javascript.js" defer></script>
 </body>
