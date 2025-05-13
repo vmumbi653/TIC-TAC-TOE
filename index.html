@@ -10,24 +10,39 @@
 <body>
     <div>
        <h1>TIC TAC TOE</h1>
-       <h3 class="turn"></h1>
-        <div class="playerUno"></div>
-        <div class="playerDos"></div>
     </div>
     <div class="players">
         <dialog id="dialog">
             <form method="dialog" id="form">
                 <div>
-                <label for="player">Player Name</label>
-                <input type="text" id="player" name="player">
+                <label for="player1">Player One Name</label>
+                <input type="text" id="player1" name="player1" required>
             </div>
+            <div>
+                <label for="marker1">Marker Player One</label>
+                <input type="text" id="marker1" name="marker1" required>
+            </div>
+            <div>
+                <label for="player2">Player Two Name</label>
+                <input type="text" id="player2" name="player2" required>
+            </div>
+            <div>
+                <label for="marker2">Marker Player Two</label>
+                <input type="text" id="marker2" name="marker2" required>
+            </div>
+            <button type="submit" id="submit">Start Game</button>
             </form>
         </dialog>
-        <div>
-            <button type="submit" value="default" id="submit">Add Player</button>
-        </div>
     </div>
     <div id="game-container"></div>
+    <div>
+        <button value="default" class="addPlayerBtn">Add Player</button>
+    </div>
+    <div>
+        <h3 class="turn"></h1>
+            <div class="playerUno"></div>
+            <div class="playerDos"></div>
+    </div>
     <script src="javascript.js" defer></script>
 </body>
 </html>

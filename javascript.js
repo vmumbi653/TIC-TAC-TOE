@@ -1,9 +1,8 @@
 //add event listeners for the button
-const addPlayerBtn = document.querySelector("button");
+const addPlayerBtn = document.querySelector(".addPlayerBtn");
+const addPlayerOne = document.querySelector(".playerUno");
+const addPlayerTwo = document.querySelector(".playerDos");
 
-addPlayerBtn.addEventListener("click", () => {
-    dialog.showModal();
-});
 
 const game = (function() {
     let gameBoard = [];   //store gameboard in array
@@ -41,6 +40,10 @@ const game = (function() {
 
 //function to direct flow of the game
 function gameFlow() {
+    let playerOne;
+    let playerTwo;
+    let activePlayer;
+
     // //render board
     game.createBoard();
 
@@ -54,15 +57,18 @@ function gameFlow() {
 
      //function to createPlayer
  const createPlayer = (name, marker) => {
-    return {
-        name: name,
-        marker: marker
-    }
+    return ({name, marker });
 };  
-    let playerOne = createPlayer("jimmy", "X");
-    let playerTwo = createPlayer("jonny", "O");
-    let activePlayer = playerOne;
-    console.log(activePlayer);
+
+const setPlayers = (name1, marker1, name2, marker2) => {
+    playerOne = createPlayer(name1, marker1);
+    playerTwo = createPlayer(name2, marker2);
+    activePlayer = playerOne;
+}
+    // let playerOne = createPlayer("jimmy", "X");
+    // let playerTwo = createPlayer("jonny", "O");
+    // let activePlayer = playerOne;
+    // console.log(activePlayer);
 
     //variable for gameOver
     let gameOver = false;
@@ -133,15 +139,27 @@ function gameFlow() {
     }
 
 
-    return {playGame, resetBoard: game.resetBoard, resetGame, getActivePlayer, switchPlayer};
+    return {playGame, resetGame, getActivePlayer, switchPlayer, setPlayers};
 };
 
 //display function
 const displayController =(function() {
     //get game module
     const gameModule = gameFlow();
-    const playerTurnDiv = document.querySelector(".turn");
+    // const playerTurnDiv = document.querySelector(".turn");
     const board = document.getElementById("game-container");
+
+    //function to update players
+    const setPlayerNames = (name1, marker1, name2, marker2) => {
+        gameModule.setPlayers(name1, marker1, name2, marker2);
+
+    }
+
+    //function to update players to DOM
+    const updatePlayersDisplay = (p1, p2) => {
+        addPlayerOne.textContent = `Player 1: ${p1}`;
+        addPlayerTwo.textContent = `Player 2: ${p2}`;
+    }
 
     //function to update screen
     const updateScreen = () => {
@@ -153,7 +171,7 @@ const displayController =(function() {
         const activePlayer = gameModule.getActivePlayer();
 
         //display player's turn
-        playerTurnDiv.textContent = `${activePlayer.name}'s turn......`;
+        // playerTurnDiv.textContent = `${activePlayer.name}'s turn......`;
 
         //render game
         for(let i = 0; i < gameBoard.length; i++) {
@@ -187,16 +205,44 @@ const displayController =(function() {
 
     };
     const init = () => {
+
         updateScreen();
         clickHandler();
     }
     // updateScreen();
     // return{board, renderBoard, clearBoard, updateScreen};
-    return{init};
+    return{init, setPlayerNames, updatePlayersDisplay};
 
 })();
 
 displayController.init();
+
+const dialog = document.querySelector("#dialog");
+const form = document.getElementById("form");
+const display = displayController;
+
+addPlayerBtn.addEventListener("click", () => {
+    dialog.showModal();
+});
+
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const name1 = document.getElementById("player1").value;
+    const marker1 = document.getElementById("marker1").value.toUpperCase();
+    const name2 = document.getElementById("player2").value;
+    const marker2 = document.getElementById('marker2').value.toUpperCase();
+
+    if(!name1 || !name2 || !marker1 || !marker2 || marker1 === marker2) {
+        alert("Please fill out all fields. Markers MUST be either X or O");
+        return;
+    }
+
+    display.setPlayerNames(name1, marker1, name2, marker2);
+    display.updatePlayersDisplay(`${name1} (${marker1})`, `${name2} (${marker2})`);
+
+    dialog.close();
+});
 
 // //function for click event
 // function clickHandler() {
