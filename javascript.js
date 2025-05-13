@@ -211,7 +211,7 @@ const displayController =(function() {
     }
     // updateScreen();
     // return{board, renderBoard, clearBoard, updateScreen};
-    return{init, setPlayerNames, updatePlayersDisplay};
+    return{init, setPlayerNames, updatePlayersDisplay, resetGame: gameModule.resetGame, updateScreen};
 
 })();
 
@@ -220,6 +220,13 @@ displayController.init();
 const dialog = document.querySelector("#dialog");
 const form = document.getElementById("form");
 const display = displayController;
+
+const resetBtn = document.querySelector(".resetBtn");
+
+resetBtn.addEventListener("click", () =>{
+    display.resetGame();
+    display.updateScreen();
+})
 
 addPlayerBtn.addEventListener("click", () => {
     dialog.showModal();
@@ -243,6 +250,8 @@ form.addEventListener("submit", (e) => {
 
     dialog.close();
 });
+
+
 
 // //function for click event
 // function clickHandler() {
