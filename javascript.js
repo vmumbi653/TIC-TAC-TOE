@@ -248,48 +248,9 @@ form.addEventListener("submit", (e) => {
     display.setPlayerNames(name1, marker1, name2, marker2);
     display.updatePlayersDisplay(`${name1} (${marker1})`, `${name2} (${marker2})`);
 
+    form.reset();
     dialog.close();
 });
-
-
-
-// //function for click event
-// function clickHandler() {
-//     //add event listener for each cell on board
-//     const boardEl = displayController.board;
-//     displayController.renderBoard(game.showBoard());
-//     boardEl.addEventListener("click", (e) => {
-//         if(!e.target.classList.contains("cell")) return; 
-//             const index = e.target.getAttribute("game-data");
-//         if(game.showBoard()[index]) return;
-
-//             game.setCell(index, getActivePlayer().marker);
-//             switchPlayer();
-//             checkWinner();
-            
-
-//             displayController.clearBoard();
-//             displayController.renderBoard(game.showBoard());
-        
-//     })
-
-// }
-
-// const startGame = gameFlow();
-
-// const display = displayController;
-// display.renderBoard(game.showBoard());
-// display.updateScreen();
-// clickHandler();
-
-// startGame.playGame;
-
-// console.log (startGame.playGame(0));
-// console.log (startGame.playGame(4));
-// console.log (startGame.playGame(1));
-// console.log (startGame.playGame(5));
-// console.log (startGame.playGame(2));
-// console.log(startGame.resetGame());
 
 
 
