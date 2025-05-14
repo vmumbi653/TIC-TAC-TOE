@@ -57,7 +57,7 @@ function gameFlow() {
 
      //function to createPlayer
  const createPlayer = (name, marker) => {
-    return ({name, marker });
+    return ({name, marker, score: 0 });
 };  
 
 const setPlayers = (name1, marker1, name2, marker2) => {
@@ -65,6 +65,18 @@ const setPlayers = (name1, marker1, name2, marker2) => {
     playerTwo = createPlayer(name2, marker2);
     activePlayer = playerOne;
 }
+
+//get players scores
+const getPlayerScore = () => {
+    return {
+        [playerOne.name]: playerOne.score,
+        [playerTwo.name]: playerTwo.score
+    }
+};
+
+const getPlayers = () => {
+    return ({playerOne, playerTwo});
+};
     // let playerOne = createPlayer("jimmy", "X");
     // let playerTwo = createPlayer("jonny", "O");
     // let activePlayer = playerOne;
@@ -113,13 +125,23 @@ const setPlayers = (name1, marker1, name2, marker2) => {
             if(winner) {
                 console.log(`${winner} wins this round!`);
                 alert(`${winner} wins this round!`);
-                gameOver = true;
+
+                //increment score
+            if(activePlayer === playerOne) {
+                playerOne.score++;
+            } else {
+                playerTwo.score++;
+            }
+
+            //update display
+            displayController.updateScore();
+              gameOver = true;
                 return;
             }
             if(isBoardFull()) {
                 console.log("IT'S A DRAW!");
-                alert("It's a DRAW!");
                 gameOver = true;
+                alert("It's a DRAW!");
                 return;
             }
             switchPlayer();
@@ -139,7 +161,7 @@ const setPlayers = (name1, marker1, name2, marker2) => {
     }
 
 
-    return {playGame, resetGame, getActivePlayer, switchPlayer, setPlayers};
+    return {playGame, resetGame, getActivePlayer, switchPlayer, setPlayers, getPlayerScore, getPlayers};
 };
 
 //display function
@@ -160,6 +182,13 @@ const displayController =(function() {
         addPlayerOne.textContent = `Player 1: ${p1}`;
         addPlayerTwo.textContent = `Player 2: ${p2}`;
     }
+
+    //method to update player scores
+    const updateScore = () => {
+        const players = gameModule.getPlayers();
+        addPlayerOne.textContent = `${players.playerOne.name} (${players.playerOne.marker}): ${players.playerOne.score}`;
+        addPlayerTwo.textContent = `${players.playerTwo.name} (${players.playerTwo.marker}): ${players.playerTwo.score}`;
+    };
 
     //function to update screen
     const updateScreen = () => {
@@ -211,7 +240,7 @@ const displayController =(function() {
     }
     // updateScreen();
     // return{board, renderBoard, clearBoard, updateScreen};
-    return{init, setPlayerNames, updatePlayersDisplay, resetGame: gameModule.resetGame, updateScreen};
+    return{init, setPlayerNames, updatePlayersDisplay, resetGame: gameModule.resetGame, updateScreen, updateScore};
 
 })();
 
