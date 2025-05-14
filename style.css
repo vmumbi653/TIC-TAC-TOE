@@ -8,6 +8,10 @@ html {
     display: grid;
     grid-template-columns: repeat(3, 100px);
     justify-content: center;
+    position: relative;
+    margin: auto;
+    width: 300px;
+    height: 300px;
 }
 
 .cell {
@@ -16,7 +20,7 @@ html {
     justify-content: center;
     align-items: center;
     font-size: 70px;
-    border: solid 1px;
+    border: solid 1px #333;
     width: 100px;
     user-select: none;
     height: 100px;
@@ -78,22 +82,30 @@ input:focus {
     box-shadow: 0 0 5px grey;
 }
 .playerScores {
-    display: flex;
     text-align: center;
-    justify-content: center;
     font-size: 20px;
 }
 .playerUno {
-    text-align: center;
     font-size: 20px;
-    display: flex;
-    justify-content: center;
+    
    
 }
 .playerDos {
     font-size: 20px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
     
+}
+
+.strike {
+    position: absolute;
+    background-color: red;
+    height: 5px;
+    width: 300px;
+    /* left: 50px;
+    right: -5px; */
+    transform-origin: left center;
+    z-index: 10;
+    transition: all 0.3s ease-in-out;
+}
+.strike.hidden {
+    display: none;
 }

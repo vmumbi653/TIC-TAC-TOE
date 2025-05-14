@@ -98,11 +98,14 @@ const getPlayers = () => {
     //function to check for winner
     const checkWinner = () => {
         const board = game.showBoard();
-        for(const combo of winningCombos) {
-            const[a, b, c] = combo;
+        for(let i = 0; i < winningCombos.length; i++) {
+            const[a, b, c] = winningCombos[i];
             if(board[a] && board[a] === board[b] && board[a] === board[c]) {
-                return activePlayer.name;
+                return { winner: activePlayer.name, comboIndex: i };
+
+                // console.log("Winning comboIndex:", comboIndex);
             }
+          
         
         }  
         return null;    //return null after checking all combos  
@@ -120,11 +123,17 @@ const getPlayers = () => {
             return;
         }
         if(game.setCell(index, activePlayer.marker)) {
-            const winner = checkWinner();
+            const result = checkWinner();
             console.log(game.showBoard());
-            if(winner) {
+            if(result) {
+                // if(result) {
+                const {winner, comboIndex} = result;
                 console.log(`${winner} wins this round!`);
                 alert(`${winner} wins this round!`);
+
+                  //show strike line
+            displayController.showStrike(comboIndex);
+            console.log("Calling show strike with combo index:", comboIndex);
 
                 //increment score
             if(activePlayer === playerOne) {
@@ -137,7 +146,8 @@ const getPlayers = () => {
             displayController.updateScore();
               gameOver = true;
                 return;
-            }
+            // }
+        }
             if(isBoardFull()) {
                 console.log("IT'S A DRAW!");
                 gameOver = true;
@@ -213,6 +223,49 @@ const displayController =(function() {
         }
 
     }
+
+    //for strike effect
+    function createStrikeLine(comboIndex) {
+        const strike = document.createElement("div");
+        strike.classList.add("strike");
+      
+        const positions = [
+          { top: 50, left: 0, rotate: 0 },     // Row 1
+          { top: 155, left: 0, rotate: 0 },    // Row 2
+          { top: 260, left: 0, rotate: 0 },    // Row 3
+          { top: 0, left: 0, rotate: 45 },     // Diagonal \
+          { top: 0, left: 0, rotate: -45 },     // Diagonal /
+          { top: 0, left: 50, rotate: 90 },    // Col 1
+          { top: 0, left: 155, rotate: 90 },   // Col 2
+          { top: 0, left: 260, rotate: 90 },   // Col 3
+         
+        ];
+      
+        const pos = positions[comboIndex];
+        console.log(pos);
+
+        //set individual style properties
+        strike.style.top = `${pos.top}px`;
+        strike.style.left = `${pos.left}px`;
+        strike.style.transform = `rotate(${pos.rotate}deg)`;
+
+        console.log("Creating strike line at index:", comboIndex);
+      
+        return strike;
+      }
+      const showStrike = (comboIndex) => {
+        clearStrike();
+        const strike = createStrikeLine(comboIndex);
+        document.querySelector("#game-container").appendChild(strike);
+        console.log("Append strike to DOM!");
+      };
+      
+      const clearStrike = () => {
+        const oldStrike = document.querySelector(".strike");
+        if (oldStrike) oldStrike.remove();
+      };
+      
+      
     //function to clear Board
     const clearBoard = () => {
         while(board.hasChildNodes()) {
@@ -228,7 +281,9 @@ const displayController =(function() {
             const index = e.target.getAttribute("game-data");
 
             gameModule.playGame(index);
-            updateScreen();
+                updateScreen();
+           
+            
 
         });
 
@@ -240,7 +295,7 @@ const displayController =(function() {
     }
     // updateScreen();
     // return{board, renderBoard, clearBoard, updateScreen};
-    return{init, setPlayerNames, updatePlayersDisplay, resetGame: gameModule.resetGame, updateScreen, updateScore};
+    return{init, setPlayerNames, updatePlayersDisplay, resetGame: gameModule.resetGame, updateScreen, updateScore, getPlayers: gameModule.getPlayers, showStrike, clearStrike};
 
 })();
 
@@ -255,6 +310,7 @@ const resetBtn = document.querySelector(".resetBtn");
 resetBtn.addEventListener("click", () =>{
     display.resetGame();
     display.updateScreen();
+    display.clearStrike();
 })
 
 addPlayerBtn.addEventListener("click", () => {
@@ -279,6 +335,17 @@ form.addEventListener("submit", (e) => {
 
     form.reset();
     dialog.close();
+});
+
+//add event listener for reset score button
+const resetScoreBtn = document.querySelector(".resetScoreBtn");
+
+resetScoreBtn.addEventListener("click", () => {
+    const players = displayController.getPlayers();
+    players.playerOne.score = 0;
+    players.playerTwo.score = 0;
+
+    displayController.updateScore();
 });
 
 
