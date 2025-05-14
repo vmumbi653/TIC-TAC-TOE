@@ -77,10 +77,6 @@ const getPlayerScore = () => {
 const getPlayers = () => {
     return ({playerOne, playerTwo});
 };
-    // let playerOne = createPlayer("jimmy", "X");
-    // let playerTwo = createPlayer("jonny", "O");
-    // let activePlayer = playerOne;
-    // console.log(activePlayer);
 
     //variable for gameOver
     let gameOver = false;
@@ -129,7 +125,7 @@ const getPlayers = () => {
                 // if(result) {
                 const {winner, comboIndex} = result;
                 console.log(`${winner} wins this round!`);
-                alert(`${winner} wins this round!`);
+                // alert(`${winner} wins this round!`);
 
                   //show strike line
             displayController.showStrike(comboIndex);
@@ -151,7 +147,7 @@ const getPlayers = () => {
             if(isBoardFull()) {
                 console.log("IT'S A DRAW!");
                 gameOver = true;
-                alert("It's a DRAW!");
+                alert("It's a DRAW!PLEASE RESTART THE GAME TO PLAY AGAIN!");
                 return;
             }
             switchPlayer();
@@ -204,9 +200,6 @@ const displayController =(function() {
 
     //function to update screen
     const updateScreen = () => { //refactor code here to show only cell content and not clear board
-        //clearBoard
-        // board.textContent = '';
-
         //get latest version of gameboard and player turn
          gameBoard = game.showBoard();
         const activePlayer = gameModule.getActivePlayer();
@@ -219,7 +212,6 @@ const displayController =(function() {
 
         //display player's turn
         // playerTurnDiv.textContent = `${activePlayer.name}'s turn......`;
-
 
     }
      //function to render board
@@ -250,7 +242,7 @@ const displayController =(function() {
           { top: 300, left: 0, rotate: -45 },     // Diagonal /
           { top: 0, left: 50, rotate: 90 },    // Col 1
           { top: 0, left: 155, rotate: 90 },   // Col 2
-          { top: 0, left: 260, rotate: 90 },   // Col 3
+          { top: 0, left: 250, rotate: 90 },   // Col 3
          
         ];
       
@@ -283,7 +275,7 @@ const displayController =(function() {
     const clearBoard = () => {
         while(board.hasChildNodes()) {
             board.removeChild(board.firstChild);
-        }
+        };
     }
 
     //click function
@@ -294,15 +286,12 @@ const displayController =(function() {
             const index = e.target.getAttribute("game-data");
 
             gameModule.playGame(index);
-                updateScreen();
-           
-            
-
+                updateScreen();  
         });
 
     };
+    //initialize game
     const init = () => {
-
         renderInitialBoard();
         updateScreen();
         clickHandler();

@@ -99,7 +99,7 @@ input:focus {
     position: absolute;
     background-color: red;
     height: 5px;
-    width: 400px;
+    width: 320px;
     /* left: 50px;
     right: -5px; */
     transform-origin: left center;
