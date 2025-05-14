@@ -181,6 +181,8 @@ const displayController =(function() {
     // const playerTurnDiv = document.querySelector(".turn");
     const board = document.getElementById("game-container");
 
+    let gameBoard = game.showBoard();
+
     //function to update players
     const setPlayerNames = (name1, marker1, name2, marker2) => {
         gameModule.setPlayers(name1, marker1, name2, marker2);
@@ -201,28 +203,39 @@ const displayController =(function() {
     };
 
     //function to update screen
-    const updateScreen = () => {
+    const updateScreen = () => { //refactor code here to show only cell content and not clear board
         //clearBoard
-        board.textContent = '';
+        // board.textContent = '';
 
         //get latest version of gameboard and player turn
-        const gameBoard = game.showBoard();
+         gameBoard = game.showBoard();
         const activePlayer = gameModule.getActivePlayer();
+
+         // Loop through the cells and update only their content
+        const cells = board.querySelectorAll(".cell");
+        cells.forEach((cell, index) => {
+            cell.textContent = gameBoard[index];
+        });
 
         //display player's turn
         // playerTurnDiv.textContent = `${activePlayer.name}'s turn......`;
 
-        //render game
-        for(let i = 0; i < gameBoard.length; i++) {
-            let gameCell = document.createElement("div");
-            gameCell.id = i;
-            gameCell.classList = "cell";
-            gameCell.setAttribute("game-data", i);
-            gameCell.textContent = gameBoard[i];
-            board.appendChild(gameCell);
-        }
 
     }
+     //function to render board
+     const renderInitialBoard = () => {
+        //render game
+        for(let i = 0; i < 9; i++) {
+           let gameCell = document.createElement("div");
+           gameCell.id = i;
+           gameCell.classList = "cell";
+           gameCell.setAttribute("game-data", i);
+           gameCell.textContent = gameBoard[i];
+           board.appendChild(gameCell);
+       };
+   }
+
+
 
     //for strike effect
     function createStrikeLine(comboIndex) {
@@ -234,7 +247,7 @@ const displayController =(function() {
           { top: 155, left: 0, rotate: 0 },    // Row 2
           { top: 260, left: 0, rotate: 0 },    // Row 3
           { top: 0, left: 0, rotate: 45 },     // Diagonal \
-          { top: 0, left: 0, rotate: -45 },     // Diagonal /
+          { top: 300, left: 0, rotate: -45 },     // Diagonal /
           { top: 0, left: 50, rotate: 90 },    // Col 1
           { top: 0, left: 155, rotate: 90 },   // Col 2
           { top: 0, left: 260, rotate: 90 },   // Col 3
@@ -290,12 +303,13 @@ const displayController =(function() {
     };
     const init = () => {
 
+        renderInitialBoard();
         updateScreen();
         clickHandler();
     }
     // updateScreen();
     // return{board, renderBoard, clearBoard, updateScreen};
-    return{init, setPlayerNames, updatePlayersDisplay, resetGame: gameModule.resetGame, updateScreen, updateScore, getPlayers: gameModule.getPlayers, showStrike, clearStrike};
+    return{init, setPlayerNames, updatePlayersDisplay, resetGame: gameModule.resetGame, updateScreen, renderInitialBoard, updateScore, getPlayers: gameModule.getPlayers, showStrike, clearStrike};
 
 })();
 
