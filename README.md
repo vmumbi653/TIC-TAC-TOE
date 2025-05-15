@@ -1,1 +1,2 @@
 # TIC-TAC-TOE
+This project entails the creation of a simple two-player Tic Tac Toe game that takes players' inputs of their names and respective markers. The game also tracks the scores of each player per round, and the players can reset their scores and start over, or restart the game after each round.

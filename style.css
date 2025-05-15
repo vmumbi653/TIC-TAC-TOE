@@ -99,7 +99,7 @@ input:focus {
     position: absolute;
     background-color: red;
     height: 5px;
-    width: 320px;
+    width: 330px;
     /* left: 50px;
     right: -5px; */
     transform-origin: left center;
@@ -109,3 +109,4 @@ input:focus {
 .strike.hidden {
     display: none;
 }
+

@@ -270,13 +270,6 @@ const displayController =(function() {
         if (oldStrike) oldStrike.remove();
       };
       
-      
-    //function to clear Board
-    const clearBoard = () => {
-        while(board.hasChildNodes()) {
-            board.removeChild(board.firstChild);
-        };
-    }
 
     //click function
     function clickHandler() {
