@@ -98,10 +98,7 @@ const getPlayers = () => {
             const[a, b, c] = winningCombos[i];
             if(board[a] && board[a] === board[b] && board[a] === board[c]) {
                 return { winner: activePlayer.name, comboIndex: i };
-
-                // console.log("Winning comboIndex:", comboIndex);
             }
-          
         
         }  
         return null;    //return null after checking all combos  
@@ -122,7 +119,6 @@ const getPlayers = () => {
             const result = checkWinner();
             console.log(game.showBoard());
             if(result) {
-                // if(result) {
                 const {winner, comboIndex} = result;
                 console.log(`${winner} wins this round!`);
                 // alert(`${winner} wins this round!`);
@@ -142,7 +138,6 @@ const getPlayers = () => {
             displayController.updateScore();
               gameOver = true;
                 return;
-            // }
         }
             if(isBoardFull()) {
                 console.log("IT'S A DRAW!");
@@ -174,7 +169,6 @@ const getPlayers = () => {
 const displayController =(function() {
     //get game module
     const gameModule = gameFlow();
-    // const playerTurnDiv = document.querySelector(".turn");
     const board = document.getElementById("game-container");
 
     let gameBoard = game.showBoard();
@@ -210,9 +204,6 @@ const displayController =(function() {
             cell.textContent = gameBoard[index];
         });
 
-        //display player's turn
-        // playerTurnDiv.textContent = `${activePlayer.name}'s turn......`;
-
     }
      //function to render board
      const renderInitialBoard = () => {
@@ -226,8 +217,6 @@ const displayController =(function() {
            board.appendChild(gameCell);
        };
    }
-
-
 
     //for strike effect
     function createStrikeLine(comboIndex) {
